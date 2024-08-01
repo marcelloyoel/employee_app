@@ -12,9 +12,13 @@
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
-                    @else
+                    @elseif(session('update'))
                         <div class="alert alert-success">
                             {{ session('update') }}
+                        </div>
+                    @elseif(session('delete'))
+                        <div class="alert alert-success">
+                            {{ session('delete') }}
                         </div>
                     @endif
                     <div class="d-flex justify-content-end">

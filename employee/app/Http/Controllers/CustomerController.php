@@ -16,7 +16,7 @@ class CustomerController extends Controller
     {
         return view('dashboard.customer.customer', [
             'title' => 'List Customer',
-            'customers' => Customer::all(),
+            'customers' => Customer::where('active', 1)->get(),
             'table'  => 'Ada'
         ]);
     }
@@ -122,6 +122,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $nonaktif = [
+            'active'    => 0
+        ];
+        Customer::where('user_id', $customer->user_id)->update($nonaktif);
+        return redirect('/customer')->with('delete', 'Data berhasil dihapus!');
     }
 }

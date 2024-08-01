@@ -14,10 +14,16 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        $loyal = Customer::where('status', 1)->where('active', 1)->count();
+        $new = Customer::where('status', 0)->where('active', 1)->count();
         return view('dashboard.customer.customer', [
             'title' => 'List Customer',
             'customers' => Customer::where('active', 1)->get(),
             'table'  => 'Ada',
+            'chart' => 'Ada',
+            'javascript'    => 'login/customer.js',
+            'loyal' => $loyal,
+            'new'   => $new
         ]);
     }
 

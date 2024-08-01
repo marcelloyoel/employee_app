@@ -788,6 +788,14 @@
         <script src="/assets/js/{{ $javascript }}"></script>
     @endif
 
+    @if(isset($chart))
+        <!-- Chart JS -->
+        <script src="assets/libs/chart.js/chart.min.js"></script>
+
+        <!-- chartjs init -->
+        <script src="assets/js/pages/chartjs.init.js"></script>
+    @endif
+
     {{-- Buat log out --}}
     <script>
         $(document).ready(function(){

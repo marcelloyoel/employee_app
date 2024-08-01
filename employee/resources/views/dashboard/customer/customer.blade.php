@@ -1,5 +1,8 @@
 @extends('partials.content')
 @section('content')
+    @php
+        echo "<script>let newCustJs = " . $new . "; let loyalCustJs = " . $loyal . ";</script>";
+    @endphp
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -74,6 +77,28 @@
             </div>
         </div>
         <!-- end col -->
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">New Customer vs Loyal Customer Donut Chart</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="doughnut1" class="chartjs-chart" data-colors='["--vz-primary", "--vz-light"]'></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">New Customer vs Loyal Customer Pie Chart</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="pieChart1" class="chartjs-chart" data-colors='["--vz-success", "--vz-light"]'></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

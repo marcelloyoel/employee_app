@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('status'); //0 = customer baru, 1 = loyal customer
+            $table->boolean('active')->default(true); // true = active, false = inactive
             $table->timestamps();
         });
     }

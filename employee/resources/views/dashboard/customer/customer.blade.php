@@ -28,6 +28,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Status (Loyalty)</th>
+                                    <th>Status (Keaktifan)</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -42,6 +43,13 @@
                                                 <span class="badge text-lg-center text-bg-success">{{ "New Customer" }}</span>
                                             @else
                                                 <span class="badge text-lg-center text-bg-info">{{ "Loyal Customer" }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($customer->active == 1)
+                                                <span class="badge text-lg-center text-bg-success">{{ "Active" }}</span>
+                                            @else
+                                                <span class="badge text-lg-center text-bg-danger">{{ "Non Active" }}</span>
                                             @endif
                                         </td>
                                         <td class="text-center">

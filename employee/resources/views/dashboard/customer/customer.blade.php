@@ -18,7 +18,7 @@
                         </div>
                     @endif
                     <div class="d-flex justify-content-end">
-                        <a href="customer/create" class="btn btn-primary mb-3">Add New Profile</a>
+                        <a href="customer/create" class="btn btn-primary mb-3">Add New Customer</a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered display" id="myTable" width="100%" cellspacing="0">
@@ -28,7 +28,6 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Status (Loyalty)</th>
-                                    <th>Status (Keaktifan)</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -45,19 +44,12 @@
                                                 <span class="badge text-lg-center text-bg-info">{{ "Loyal Customer" }}</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($customer->active == 1)
-                                                <span class="badge text-lg-center text-bg-success">{{ "Active" }}</span>
-                                            @else
-                                                <span class="badge text-lg-center text-bg-danger">{{ "Non Active" }}</span>
-                                            @endif
-                                        </td>
                                         <td class="text-center">
                                             <a href="/customer/{{ $customer->user_id }}/edit"
                                                 class="btn btn-warning btn-circle mx-2">
                                                 <i class="las la-pencil-alt"></i>
                                             </a>
-                                            <form action="/profile/{{ $customer->user_id }}" method="POST" class="d-inline">
+                                            <form action="/customer/{{ $customer->user_id }}" method="POST" class="d-inline">
                                                 @method('delete')
                                                 @csrf
                                                 <button class="btn btn-danger btn-circle" type="submit"

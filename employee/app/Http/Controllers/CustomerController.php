@@ -89,7 +89,11 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view('dashboard.customer.editcustomer', [
+            'customer'  => $customer,
+            'title' => 'Edit Customer',
+            'javascript'    => 'login/addcustomer.js'
+        ]);
     }
 
     /**
@@ -101,7 +105,13 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email,' . $customer->user_id . ',user_id',
+            'status' => 'required|boolean',
+        ]);
+        Customer::where('user_id', $customer->user_id)->update($validated);
+        return redirect('/customer')->with('update', 'Data berhasil diupdate!');
     }
 
     /**

@@ -12,6 +12,10 @@
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
+                    @else
+                        <div class="alert alert-success">
+                            {{ session('update') }}
+                        </div>
                     @endif
                     <div class="d-flex justify-content-end">
                         <a href="customer/create" class="btn btn-primary mb-3">Add New Profile</a>

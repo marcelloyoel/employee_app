@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="name" class="form-label">Nama Lengkap: </label>
-                                <input value="{{ old('name', $customer->name) }}" type="text" class="form-control" name="name" id="name" placeholder="Isi nama lengkap yang sesuai" required>
+                                <input value="{{ old('name', $customer->name) }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Isi nama lengkap yang sesuai" required>
                                 @error('name')
                                     <div class="invalid-feedback mb-2">
                                         {{ $message }}

@@ -15,11 +15,21 @@
                         <div class="row">
                             <div class=" col-12 col-md-6">
                                 <label for="name" class="form-label">Nama Lengkap: </label>
-                                <input type="text" class="form-control" name="name" id="name" placeholder="Isi nama lengkap yang sesuai" required>
+                                <input  type="text" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Isi nama lengkap yang sesuai" required>
+                                @error('name')
+                                    <div class="invalid-feedback mb-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="col-12 col-md-6">
                                 <label for="email" class="form-label">Email Aktif: </label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Isi email" required>
+                                <input type="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Isi email" required>
+                                @error('email')
+                                    <div class="invalid-feedback mb-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mt-4">

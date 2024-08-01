@@ -787,6 +787,39 @@
     @if(isset($javascript))
         <script src="/assets/js/{{ $javascript }}"></script>
     @endif
+
+    {{-- Buat log out --}}
+    <script>
+        $(document).ready(function(){
+            $('#logOutFix').on('click', function(e){
+                console.log('masuk sini ga');
+                e.preventDefault();
+                $('#spinnerLoading').css("display", "block");
+                $('#tulisDisini').text('Lagi Mencoba Keluarin Kamu').show();
+                $.ajax({
+                    url: '/logout',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content') // Add CSRF token here
+                    },
+                    success: function(response){
+                        console.log(response);
+                        $('#tulisDisini').text('Berhasil, silahkan kembali login').show();
+                        // Add a delay of 1.5 seconds (1500 milliseconds) before redirecting
+                        setTimeout(function() {
+                            window.location.href = '/';
+                        }, 1000); // Delay time in milliseconds
+                    },
+                    error: function(response) {
+                        console.log(response);
+                        $('#spinnerLoading').css("display", "none");
+                        $('#tulisDisini').css("color", "red").text('Terjadi kesalahan. Mohon diulang.').show();
+                        console.log('salah');
+                    }
+                })
+            });
+        });
+    </script>
 </body>
 
 @endsection

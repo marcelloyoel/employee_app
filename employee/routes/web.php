@@ -21,5 +21,6 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::resource('customer', CustomerController::class);
+Route::resource('/customer', CustomerController::class);

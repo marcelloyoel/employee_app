@@ -32,6 +32,8 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Status (Loyalty)</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -48,6 +50,8 @@
                                                 <span class="badge text-lg-center text-bg-info">{{ "Loyal Customer" }}</span>
                                             @endif
                                         </td>
+                                        <td>{{ $customer->created_at->timezone('Asia/Bangkok')->format('Y-m-d H:i:s') }}</td>
+                                        <td>{{ $customer->updated_at->timezone('Asia/Bangkok')->format('Y-m-d H:i:s') }}</td>
                                         <td class="text-center">
                                             <a href="/customer/{{ $customer->user_id }}/edit"
                                                 class="btn btn-warning btn-circle mx-2">

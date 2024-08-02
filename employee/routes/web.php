@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Jobs\TestJob;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,11 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::resource('/customer', CustomerController::class);
+
+
+
+// For testing only
+Route::get('/dispatch-job', function () {
+    TestJob::dispatch();
+    return 'Job dispatched!';
+});

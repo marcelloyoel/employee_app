@@ -11,7 +11,7 @@
                         @csrf
                         <div class="alertNih">
                         </div>
-                        <input type="hidden" name="status" value="0">
+                        <input type="hidden" name="status" id="statusHidden" value="0">
                         <div class="row">
                             <div class=" col-12 col-md-6">
                                 <label for="name" class="form-label">Nama Lengkap: </label>
@@ -38,6 +38,14 @@
                                     Submit Data
                                 </button>
                             </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="d-flex justify-content-center" style="display:none;">
+                                <span id="spinnerLoading"
+                                    class="spinner-border spinner-border-sm mt-15 text-black" role="status"
+                                    aria-hidden="true" style="width:1rem; height:1rem; display:none"></span>
+                            </div>
+                            <div class="mt-2 text-center" id="tulisDisini" style="display:none;"></div>
                         </div>
                     </form>
                 </div>

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWelcomeEmail;
+use App\Mail\WelcomeEmail;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -48,16 +52,17 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('ho');
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers',
             'status' => 'required|boolean',
         ]);
+
         $datePrefix = now()->format('dmY'); // Get the date in ddmmyy format
         $lastCustomer = Customer::where('user_id', 'like', $datePrefix . '%')
             ->orderBy('user_id', 'desc')
             ->first();
+
         // Generate the next incrementing number
         $nextIncrement = '001';
         if ($lastCustomer) {
@@ -67,13 +72,17 @@ class CustomerController extends Controller
 
         // Combine date prefix with incrementing number
         $user_id = $datePrefix . $nextIncrement;
-        // dd($user_id);
-        // Create a new customer record
-        // $customer = Customer::create(array_merge($validated, ['user_id' => $user_id]));
-        Customer::create(array_merge($validated, ['user_id' => $user_id]));
+        $customer = Customer::create(array_merge($validated, ['user_id' => $user_id]));
 
-        // Handle response
-        return redirect('/customer')->with('success', 'Data berhasil ditambahkan!');
+        Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $customer->email);
+        dispatch(new SendWelcomeEmail($customer->email));
+        Log::info('(CustomerController)SendWelcomeEmail job dispatched');
+
+        // Return a JSON response to the AJAX request
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer added successfully! A welcome email has been sent.',
+        ], 201);
     }
 
     /**

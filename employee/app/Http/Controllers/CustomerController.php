@@ -75,7 +75,7 @@ class CustomerController extends Controller
         $customer = Customer::create(array_merge($validated, ['user_id' => $user_id]));
 
         Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $customer->email);
-        dispatch(new SendWelcomeEmail($customer->email));
+        dispatch(new SendWelcomeEmail($customer->email, $customer->status));
         Log::info('(CustomerController)SendWelcomeEmail job dispatched');
 
         // Return a JSON response to the AJAX request
@@ -107,7 +107,7 @@ class CustomerController extends Controller
         return view('dashboard.customer.editcustomer', [
             'customer'  => $customer,
             'title' => 'Edit Customer',
-            'javascript'    => 'login/addcustomer.js'
+            'javascript'    => 'login/editcustomer.js'
         ]);
     }
 
@@ -126,7 +126,14 @@ class CustomerController extends Controller
             'status' => 'required|boolean',
         ]);
         Customer::where('user_id', $customer->user_id)->update($validated);
-        return redirect('/customer')->with('update', 'Data berhasil diupdate!');
+        $updatedCustomer = Customer::where('user_id', $customer->user_id)->first();
+        if ($updatedCustomer->status == 1) {
+            Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $updatedCustomer->email);
+            dispatch(new SendWelcomeEmail($updatedCustomer->email, $updatedCustomer->status));
+            Log::info('(CustomerController)SendWelcomeEmail job dispatched');
+        }
+        // return redirect('/customer')->with('update', 'Data berhasil diupdate!');
+        return response()->json(['success' => true, 'message' => 'Data berhasil diupdate!']);
     }
 
     /**

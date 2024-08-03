@@ -52,6 +52,14 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="d-flex justify-content-center" style="display:none;">
+                                <span id="spinnerLoading"
+                                    class="spinner-border spinner-border-sm mt-15 text-black" role="status"
+                                    aria-hidden="true" style="width:1rem; height:1rem; display:none"></span>
+                            </div>
+                            <div class="mt-2 text-center" id="tulisDisini" style="display:none;"></div>
+                        </div>
                     </form>
                 </div>
             </div>

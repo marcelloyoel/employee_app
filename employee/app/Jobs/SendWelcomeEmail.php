@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\LoyalEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,16 +17,19 @@ class SendWelcomeEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $email;
+    protected $status;
     /**
      * Create a new job instance.
      *
      * @param  $customer
      * @return void
      */
-    public function __construct($email)
+    public function __construct($email, $status)
     {
         Log::info('(Jobs)Creating SendWelcomeEmail job with customer Email: ' . $email);
+        Log::info('(Jobs)Creating SendWelcomeEmail job with customer Status: ' . $status);
         $this->email = $email;
+        $this->status = $status;
     }
     // public function __construct()
     // {
@@ -38,9 +42,13 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('(Jobs)Sending email to: ' . $this->email);
         try {
-            Mail::to($this->email)->send(new WelcomeEmail());
+            Log::info('(Jobs)Sending email to: ' . $this->email . ' with status: ' . $this->status);
+            if ($this->status == 0) {
+                Mail::to($this->email)->send(new WelcomeEmail());
+            } else {
+                Mail::to($this->email)->send(new LoyalEmail());
+            }
         } catch (\Exception $e) {
             Log::error('Error sending email: ' . $e->getMessage());
         }

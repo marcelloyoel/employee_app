@@ -57,7 +57,7 @@
                                         <td>{{ $customer->updated_at->timezone('Asia/Bangkok')->format('Y-m-d H:i:s') }}</td>
                                         <td class="text-center">
                                             <a href="/customer/{{ $customer->user_id }}/edit"
-                                                class="btn btn-warning btn-circle mx-2">
+                                                class="btn btn-warning btn-circle mx-2 my-2">
                                                 <i class="las la-pencil-alt"></i>
                                             </a>
                                             <form action="/customer/{{ $customer->user_id }}" method="POST" class="d-inline">

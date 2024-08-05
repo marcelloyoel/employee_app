@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="card-body">
-                    @if (session('success'))
+                    {{-- @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
@@ -19,11 +19,23 @@
                         <div class="alert alert-success">
                             {{ session('update') }}
                         </div>
-                    @elseif(session('delete'))
+                        --}}
+                    @if(session('delete'))
                         <div class="alert alert-success">
                             {{ session('delete') }}
                         </div>
                     @endif
+                    <div class="alert alert-success" id="alertSuccess" style="display:none;">
+                    </div>
+                    <script>
+                        var successMessage = localStorage.getItem('success_message');
+
+                        if (successMessage) {
+                            document.getElementById('alertSuccess').textContent = successMessage;
+                            document.getElementById('alertSuccess').style.display = 'block';
+                            localStorage.removeItem('success_message');
+                        }
+                    </script>
                     <div class="d-flex justify-content-end">
                         <a href="customer/create" class="btn btn-primary mb-3">Add New Customer</a>
                     </div>

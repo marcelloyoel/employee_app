@@ -133,7 +133,7 @@ class CustomerController extends Controller
             Log::info('(CustomerController)SendWelcomeEmail job dispatched');
         }
         // return redirect('/customer')->with('update', 'Data berhasil diupdate!');
-        return response()->json(['success' => true, 'message' => 'Data berhasil diupdate!']);
+        return response()->json(['success' => true, 'message' => 'Customer edited successfully!']);
     }
 
     /**
@@ -148,6 +148,6 @@ class CustomerController extends Controller
             'active'    => 0
         ];
         Customer::where('user_id', $customer->user_id)->update($nonaktif);
-        return redirect('/customer')->with('delete', 'Data berhasil dihapus!');
+        return redirect('/customer')->with('delete', 'Customer deleted successfully!');
     }
 }

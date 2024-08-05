@@ -75,7 +75,7 @@
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>
                                             <input type="text" class="form-control" id="username"
-                                                placeholder="Enter username">
+                                                placeholder="Enter username" value="{{ Cookie::get('cookie_name') ? Cookie::get('cookie_name') : "" }}">
                                         </div>
 
                                         <div class="mb-3">
@@ -86,7 +86,7 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password" class="form-control pe-5 password-input"
-                                                    placeholder="Enter password" id="password-input">
+                                                    placeholder="Enter password" id="password-input" value="{{ Cookie::get('cookie_pass') ? Cookie::get('cookie_pass') : "" }}">
                                                 <button
                                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none password-addon"
                                                     type="button" id="password-addon"><i
@@ -96,8 +96,8 @@
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value=""
-                                                id="auth-remember-check">
-                                            <label class="form-check-label" for="auth-remember-check">Remember
+                                                id="auth-remember-check" name="remember_me">
+                                            <label class="form-check-label" for="remember_me">Remember
                                                 me</label>
                                         </div>
 

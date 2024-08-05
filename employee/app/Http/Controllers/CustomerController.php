@@ -52,37 +52,47 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers',
-            'status' => 'required|boolean',
-        ]);
+        try {
+            // Validate the incoming request data
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:customers',
+                'status' => 'required|boolean',
+            ]);
 
-        $datePrefix = now()->format('dmY'); // Get the date in ddmmyy format
-        $lastCustomer = Customer::where('user_id', 'like', $datePrefix . '%')
-            ->orderBy('user_id', 'desc')
-            ->first();
+            $datePrefix = now()->format('dmY'); // Get the date in ddmmyy format
+            $lastCustomer = Customer::where('user_id', 'like', $datePrefix . '%')
+                ->orderBy('user_id', 'desc')
+                ->first();
 
-        // Generate the next incrementing number
-        $nextIncrement = '001';
-        if ($lastCustomer) {
-            $lastNumber = (int) substr($lastCustomer->user_id, -3);
-            $nextIncrement = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            // Generate the next incrementing number
+            $nextIncrement = '001';
+            if ($lastCustomer) {
+                $lastNumber = (int) substr($lastCustomer->user_id, -3);
+                $nextIncrement = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+            }
+
+            // Combine date prefix with incrementing number
+            $user_id = $datePrefix . $nextIncrement;
+            $customer = Customer::create(array_merge($validated, ['user_id' => $user_id]));
+
+            Log::info('(CustomerController) Dispatching SendWelcomeEmail job for customer email: ' . $customer->email);
+            dispatch(new SendWelcomeEmail($customer->email, $customer->status));
+            Log::info('(CustomerController) SendWelcomeEmail job dispatched');
+
+            // Return a JSON response to the AJAX request
+            return response()->json([
+                'success' => true,
+                'message' => 'Customer added successfully! A welcome email has been sent.',
+            ], 201);
+        } catch (\Exception $e) {
+            // Handle exceptions and return a JSON error response
+            Log::error('(CustomerController) Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        // Combine date prefix with incrementing number
-        $user_id = $datePrefix . $nextIncrement;
-        $customer = Customer::create(array_merge($validated, ['user_id' => $user_id]));
-
-        Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $customer->email);
-        dispatch(new SendWelcomeEmail($customer->email, $customer->status));
-        Log::info('(CustomerController)SendWelcomeEmail job dispatched');
-
-        // Return a JSON response to the AJAX request
-        return response()->json([
-            'success' => true,
-            'message' => 'Customer added successfully! A welcome email has been sent.',
-        ], 201);
     }
 
     /**
@@ -120,20 +130,29 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customer->user_id . ',user_id',
-            'status' => 'required|boolean',
-        ]);
-        Customer::where('user_id', $customer->user_id)->update($validated);
-        $updatedCustomer = Customer::where('user_id', $customer->user_id)->first();
-        if ($updatedCustomer->status == 1) {
-            Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $updatedCustomer->email);
-            dispatch(new SendWelcomeEmail($updatedCustomer->email, $updatedCustomer->status));
-            Log::info('(CustomerController)SendWelcomeEmail job dispatched');
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:customers,email,' . $customer->user_id . ',user_id',
+                'status' => 'required|boolean',
+            ]);
+            Customer::where('user_id', $customer->user_id)->update($validated);
+            $updatedCustomer = Customer::where('user_id', $customer->user_id)->first();
+            if ($updatedCustomer->status == 1) {
+                Log::info('(CustomerController)Dispatching SendWelcomeEmail job for customer email: ' . $updatedCustomer->email);
+                dispatch(new SendWelcomeEmail($updatedCustomer->email, $updatedCustomer->status));
+                Log::info('(CustomerController)SendWelcomeEmail job dispatched');
+            }
+            // return redirect('/customer')->with('update', 'Data berhasil diupdate!');
+            return response()->json(['success' => true, 'message' => 'Customer edited successfully!']);
+        } catch (\Exception $e) {
+            // Handle exceptions and return a JSON error response
+            Log::error('(CustomerController) Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-        // return redirect('/customer')->with('update', 'Data berhasil diupdate!');
-        return response()->json(['success' => true, 'message' => 'Customer edited successfully!']);
     }
 
     /**

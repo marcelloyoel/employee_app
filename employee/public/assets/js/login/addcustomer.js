@@ -44,7 +44,7 @@ function ajaxSuccess(){
         },
         error: function(response) {
             $('#spinnerLoading').css("display", "none");
-            $('#tulisDisini').css("color", "red").text('An error occurred!').show();
+            $('#tulisDisini').css("color", "red").text(response.responseJSON.message).show();
             console.log(response.responseJSON.message);
             console.log('kok bisa');
         }
@@ -54,6 +54,7 @@ function ajaxSuccess(){
 $('#submitBtn').on('click', function(e){
     console.log('masuk sini');
     $('#spinnerLoading').css("display", "block");
+    $('#tulisDisini').css("color", "black")
     $('#tulisDisini').text('Melakukan validasi data...').show();
     setTimeout(function() {
         let validasi = validasiForm();

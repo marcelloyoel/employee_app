@@ -8,6 +8,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Yajra\DataTables\DataTables;
 
 class CustomerController extends Controller
 {
@@ -30,6 +31,47 @@ class CustomerController extends Controller
             'new'   => $new
         ]);
     }
+
+    public function getCustomers(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Customer::select(['user_id', 'name', 'email', 'status', 'created_at', 'updated_at'])
+                ->where('active', 1);
+
+            return DataTables::of($query)
+                ->editColumn('created_at', function ($customer) {
+                    return $customer->created_at->timezone('Asia/Bangkok')->format('Y-m-d H:i:s');
+                })
+                ->editColumn('updated_at', function ($customer) {
+                    return $customer->updated_at->timezone('Asia/Bangkok')->format('Y-m-d H:i:s');
+                })
+                ->editColumn('status', function ($customer) {
+                    if ($customer->status == 0) {
+                        return '<span class="badge text-lg-center text-bg-success">New Customer</span>';
+                    }
+                    if ($customer->status == 1) {
+                        return '<span class="badge text-lg-center text-bg-info">Loyal Customer</span>';
+                    }
+                })
+                ->addColumn('action', function ($customer) {
+                    return '
+                        <a href="/customer/' . $customer->user_id . '/edit" class="btn btn-warning btn-circle mx-12 my-2">
+                            <i class="las la-pencil-alt"></i>
+                        </a>
+                        <form action="/customer/' . $customer->user_id . '" method="POST" class="d-inline" onsubmit="return confirm(\'Are you sure?\')">
+                            ' . method_field('DELETE') . '
+                            ' . csrf_field() . '
+                            <button class="btn btn-danger btn-circle" type="submit">
+                                <i class="las la-trash"></i>
+                            </button>
+                        </form>
+                    ';
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.

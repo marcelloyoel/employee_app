@@ -25,7 +25,8 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::resource('/customer', CustomerController::class);
+    Route::get('customers/data', [CustomerController::class, 'getCustomers'])->name('customers.data');
+    Route::resource('customer', CustomerController::class);
 
 
 

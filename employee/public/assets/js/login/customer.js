@@ -89,3 +89,49 @@ document.addEventListener('DOMContentLoaded', function () {
     ctx2.chart = myPieChart;
 });
 
+
+$(document).ready(function() {
+    $('#customers-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/customers/data',
+            type: 'GET',
+        },
+        columns: [
+            { data: 'user_id', name: 'user_id' },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            {
+                data: 'status',
+                name: 'status',
+                render: function(data) {
+                    console.log('Status Data:', data); // Debugging line
+                    // if (data == 0) {
+                    //     return '<span class="badge text-lg-center text-bg-success">New Customer</span>';
+                    // } else {
+                    //     return '<span class="badge text-lg-center text-bg-info">Loyal Customer</span>';
+                    // }
+                    return '<div class="text-center">' + data + '</div';
+                }
+            },
+            {
+                data: 'created_at',
+                name: 'created_at',
+                render: function(data) {
+                    let date = new Date(data);
+                    return date.toLocaleString('en-GB', { timeZone: 'Asia/Bangkok' });
+                }
+            },
+            {
+                data: 'updated_at',
+                name: 'updated_at',
+                render: function(data) {
+                    let date = new Date(data);
+                    return date.toLocaleString('en-GB', { timeZone: 'Asia/Bangkok' });
+                }
+            },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+});

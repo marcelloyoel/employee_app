@@ -40,7 +40,7 @@
                         <a href="customer/create" class="btn btn-primary mb-3">Add New Customer</a>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-bordered display" id="myTable" width="100%" cellspacing="0">
+                        <table class="table table-striped table-bordered" id="customers-table" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Customer's Id</th>
@@ -53,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($customers as $customer)
+                                {{-- @foreach ($customers as $customer)
                                     <tr class="">
                                         <td class="sorting_1">{{ $customer->user_id }}</td>
                                         <td>{{ $customer->name }}</td>
@@ -81,7 +81,7 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -104,7 +104,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">New Customer vs Loyal Customer Pie Chart</h4>
+                    <h4 id="testDoang" class="card-title mb-0">New Customer vs Loyal Customer Pie Chart</h4>
                 </div>
                 <div class="card-body">
                     <canvas id="pieChart1" class="chartjs-chart" data-colors='["--vz-success", "--vz-light"]'></canvas>

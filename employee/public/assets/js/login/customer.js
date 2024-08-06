@@ -132,6 +132,12 @@ $(document).ready(function() {
                 }
             },
             { data: 'action', name: 'action', orderable: false, searchable: false }
-        ]
+        ],
+        initComplete: function(settings, json) {
+            // Your custom code here
+            console.log('DataTable initialized successfully!');
+            // You can perform additional actions or setup after initialization.
+            $('.atas').parent().addClass('text-center');
+        }
     });
 });

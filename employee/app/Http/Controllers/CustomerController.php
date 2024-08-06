@@ -55,7 +55,7 @@ class CustomerController extends Controller
                 })
                 ->addColumn('action', function ($customer) {
                     return '
-                        <a href="/customer/' . $customer->user_id . '/edit" class="btn btn-warning btn-circle mx-12 my-2">
+                        <a href="/customer/' . $customer->user_id . '/edit"  class="atas btn btn-warning btn-circle my-2">
                             <i class="las la-pencil-alt"></i>
                         </a>
                         <form action="/customer/' . $customer->user_id . '" method="POST" class="d-inline" onsubmit="return confirm(\'Are you sure?\')">
